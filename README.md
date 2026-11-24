@@ -1,5 +1,7 @@
 # opencode-chat-export
 
+[![tests](https://github.com/akbargherbal/opencode-chat-export/actions/workflows/tests.yml/badge.svg)](https://github.com/akbargherbal/opencode-chat-export/actions/workflows/tests.yml)
+
 Export every OpenCode chat on this machine into **one portable zip** of JSON
 files, plus human-readable Markdown, an index, and a manifest. Designed for
 **ephemeral VMs**: run it once before shutdown, download the zip, and read or
