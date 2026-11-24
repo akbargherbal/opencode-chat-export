@@ -76,6 +76,17 @@ def json_dumps(value: Any, *, pretty: bool = True) -> str:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
 
 
+def write_text(path: Path, text: str, *, encoding: str = "utf-8") -> None:
+    """Write text with LF newlines.
+
+    ``Path.write_text(newline=...)`` only exists on Python 3.10+, and this
+    package supports 3.9.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding=encoding, newline="\n") as handle:
+        handle.write(text)
+
+
 def atomic_write_text(path: Path, text: str, *, encoding: str = "utf-8") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(

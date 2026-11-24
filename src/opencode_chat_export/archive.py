@@ -39,6 +39,7 @@ from .util import (
     sha256_bytes,
     sha256_file,
     slugify,
+    write_text,
 )
 INDEX_SCHEMA_VERSION = 1
 
@@ -312,9 +313,7 @@ def build_archive(
                     exported_at=generated_at,
                     host=options.host,
                 )
-                (sessions_dir / transcript_name).write_text(
-                    transcript_text, encoding="utf-8", newline="\n"
-                )
+                write_text(sessions_dir / transcript_name, transcript_text)
 
             issues = [issue.to_dict() for issue in result.issues]
             for issue in result.issues:
@@ -353,15 +352,13 @@ def build_archive(
             "host": options.host,
             "sessions": entries,
         }
-        (root_dir / "index.json").write_text(json_dumps(index), encoding="utf-8", newline="\n")
-        (root_dir / "index.md").write_text(
-            _index_markdown(entries, generated_at), encoding="utf-8", newline="\n"
-        )
+        write_text(root_dir / "index.json", json_dumps(index))
+        write_text(root_dir / "index.md", _index_markdown(entries, generated_at))
 
         schema_dir = root_dir / "schema"
         schema_dir.mkdir(parents=True, exist_ok=True)
         for name, schema in all_schemas().items():
-            (schema_dir / name).write_text(json_dumps(schema), encoding="utf-8", newline="\n")
+            write_text(schema_dir / name, json_dumps(schema))
 
         totals = {
             "sessions": len(entries),
@@ -382,7 +379,8 @@ def build_archive(
                     "include-db requested but no consistent database snapshot was available"
                 )
 
-        (root_dir / "README.md").write_text(
+        write_text(
+            root_dir / "README.md",
             _readme(
                 generated_at=generated_at,
                 opencode_version=options.opencode.get("version"),
@@ -390,8 +388,6 @@ def build_archive(
                 root_name=root_name,
                 totals=totals,
             ),
-            encoding="utf-8",
-            newline="\n",
         )
 
         files = []
@@ -434,9 +430,7 @@ def build_archive(
             "errors": errors,
             "diagnostics": provider.diagnostics,
         }
-        (root_dir / "manifest.json").write_text(
-            json_dumps(manifest), encoding="utf-8", newline="\n"
-        )
+        write_text(root_dir / "manifest.json", json_dumps(manifest))
 
         _write_zip(root_dir, out, options.deterministic)
 
