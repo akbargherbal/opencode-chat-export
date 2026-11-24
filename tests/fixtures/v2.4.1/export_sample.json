@@ -1,0 +1,115 @@
+{
+  "info": {
+    "id": "ses_fixture_export_0001",
+    "projectID": "proj_demo",
+    "agent": "build",
+    "model": {
+      "id": "test-model",
+      "providerID": "test",
+      "variant": "high"
+    },
+    "cost": 0.01,
+    "tokens": {
+      "input": 100,
+      "output": 50,
+      "reasoning": 10,
+      "cache": {
+        "read": 20,
+        "write": 0
+      }
+    },
+    "outcome": "succeeded",
+    "time": {
+      "created": 1700000000000,
+      "updated": 1700000500000,
+      "busy": 1700000001000,
+      "idle": 1700000500000
+    },
+    "title": "Fixture export",
+    "location": {
+      "directory": "/work/demo"
+    }
+  },
+  "messages": [
+    {
+      "id": "msg_fixture_user_0001",
+      "type": "user",
+      "time": {
+        "created": 1700000001000
+      },
+      "text": "Please inspect the widget.",
+      "files": [
+        {
+          "name": "notes.txt",
+          "mime": "text/plain",
+          "data": "aGVsbG8=",
+          "source": {
+            "type": "uri",
+            "uri": "file:///work/demo/notes.txt"
+          }
+        }
+      ],
+      "agents": [
+        {
+          "name": "build"
+        }
+      ]
+    },
+    {
+      "id": "msg_fixture_assistant_0002",
+      "type": "assistant",
+      "time": {
+        "created": 1700000002000,
+        "completed": 1700000003000
+      },
+      "agent": "build",
+      "model": {
+        "id": "test-model",
+        "providerID": "test"
+      },
+      "content": [
+        {
+          "type": "reasoning",
+          "text": "Check the file first.",
+          "time": {
+            "created": 1700000002100,
+            "completed": 1700000002400
+          }
+        },
+        {
+          "type": "tool",
+          "id": "call_fixture_1",
+          "name": "read",
+          "executed": true,
+          "state": {
+            "status": "completed",
+            "input": {
+              "path": "/work/demo/widget.py"
+            },
+            "output": "print('hi')\n",
+            "metadata": {}
+          },
+          "time": {
+            "created": 1700000002500,
+            "completed": 1700000002700
+          }
+        },
+        {
+          "type": "text",
+          "text": "The widget prints `hi`."
+        }
+      ],
+      "finish": "stop",
+      "cost": 0.01,
+      "tokens": {
+        "input": 100,
+        "output": 50,
+        "reasoning": 10,
+        "cache": {
+          "read": 20,
+          "write": 0
+        }
+      }
+    }
+  ]
+}

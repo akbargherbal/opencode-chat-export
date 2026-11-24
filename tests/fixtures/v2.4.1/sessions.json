@@ -1,0 +1,430 @@
+{
+  "projects": [
+    {
+      "id": "proj_demo",
+      "worktree": "/work/demo",
+      "name": "demo",
+      "vcs": "git",
+      "time_created": 1699999000000,
+      "time_updated": 1700000000000,
+      "sandboxes": "[]"
+    },
+    {
+      "id": "proj_other",
+      "worktree": "/work/other",
+      "name": "other",
+      "vcs": null,
+      "time_created": 1700000500000,
+      "time_updated": 1700001000000,
+      "sandboxes": "[]"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "ses_aaaaaaaaaaaaaaaaaaaaaaaa",
+      "project_id": "proj_demo",
+      "parent_id": null,
+      "directory": "/work/demo",
+      "slug": "fix-widget-pipeline",
+      "title": "Fix the widget pipeline",
+      "version": "2.4.1",
+      "agent": "build",
+      "model": {
+        "id": "test-model",
+        "providerID": "test",
+        "variant": "high"
+      },
+      "cost": 0.0123,
+      "tokens": {
+        "input": 100,
+        "output": 50,
+        "reasoning": 10,
+        "cache_read": 20,
+        "cache_write": 0
+      },
+      "time_created": 1700000000000,
+      "time_updated": 1700000500000,
+      "time_busy": 1700000001000,
+      "time_idle": 1700000500000,
+      "idle_outcome": "succeeded",
+      "metadata": {
+        "fixture": true
+      },
+      "messages": [
+        {
+          "id": "msg_user_0001",
+          "type": "user",
+          "seq": 1,
+          "time_created": 1700000001000,
+          "data": {
+            "time": {
+              "created": 1700000001000
+            },
+            "text": "Please fix the widget pipeline.\n\nUse the notes.",
+            "files": [
+              {
+                "name": "notes.txt",
+                "mime": "text/plain",
+                "data": "aGVsbG8=",
+                "source": {
+                  "type": "uri",
+                  "uri": "file:///work/demo/notes.txt"
+                }
+              }
+            ],
+            "agents": [
+              {
+                "name": "build"
+              }
+            ]
+          }
+        },
+        {
+          "id": "msg_assistant_0002",
+          "type": "assistant",
+          "seq": 2,
+          "time_created": 1700000002000,
+          "data": {
+            "time": {
+              "created": 1700000002000,
+              "firstToken": 1700000002500,
+              "completed": 1700000003000
+            },
+            "agent": "build",
+            "model": {
+              "id": "test-model",
+              "providerID": "test",
+              "variant": "high"
+            },
+            "content": [],
+            "finish": "tool-calls",
+            "cost": 0.005,
+            "tokens": {
+              "input": 80,
+              "output": 20,
+              "reasoning": 5,
+              "cache": {
+                "read": 10,
+                "write": 0
+              }
+            }
+          },
+          "parts": [
+            {
+              "ordinal": 0,
+              "type": "reasoning",
+              "data": {
+                "type": "reasoning",
+                "text": "I should inspect the widget file before changing it.",
+                "native": {
+                  "reasoningField": "reasoning_content"
+                },
+                "time": {
+                  "created": 1700000002100,
+                  "completed": 1700000002400
+                }
+              }
+            },
+            {
+              "ordinal": 1,
+              "type": "tool",
+              "data": {
+                "type": "tool",
+                "id": "call_0001",
+                "name": "read",
+                "executed": true,
+                "state": {
+                  "status": "completed",
+                  "input": {
+                    "path": "/work/demo/widget.py"
+                  },
+                  "output": "print('hi')\n",
+                  "metadata": {}
+                },
+                "time": {
+                  "created": 1700000002500,
+                  "ran": 1700000002600,
+                  "completed": 1700000002700
+                }
+              }
+            },
+            {
+              "ordinal": 2,
+              "type": "text",
+              "data": {
+                "type": "text",
+                "text": "The widget prints `hi`; I will fix the pipeline."
+              }
+            }
+          ]
+        },
+        {
+          "id": "msg_assistant_0003",
+          "type": "assistant",
+          "seq": 3,
+          "time_created": 1700000004000,
+          "data": {
+            "time": {
+              "created": 1700000004000,
+              "completed": 1700000005000
+            },
+            "agent": "build",
+            "model": {
+              "id": "test-model",
+              "providerID": "test",
+              "variant": "high"
+            },
+            "content": [],
+            "finish": "stop",
+            "cost": 0.002,
+            "tokens": {
+              "input": 20,
+              "output": 10,
+              "reasoning": 2,
+              "cache": {
+                "read": 5,
+                "write": 0
+              }
+            }
+          },
+          "parts": [
+            {
+              "ordinal": 0,
+              "type": "text",
+              "data": {
+                "type": "text",
+                "text": "Done."
+              }
+            }
+          ]
+        },
+        {
+          "id": "msg_synthetic_0004",
+          "type": "synthetic",
+          "seq": 4,
+          "time_created": 1700000006000,
+          "data": {
+            "time": {
+              "created": 1700000006000
+            },
+            "text": "Context compacted."
+          }
+        },
+        {
+          "id": "msg_compaction_0005",
+          "type": "compaction",
+          "seq": 5,
+          "time_created": 1700000007000,
+          "data": {
+            "time": {
+              "created": 1700000007000
+            },
+            "status": "completed",
+            "reason": "auto",
+            "model": {
+              "id": "test-model",
+              "providerID": "test"
+            },
+            "summary": "Earlier context: the widget pipeline was inspected.",
+            "cost": 0.001,
+            "tokens": {
+              "input": 10,
+              "output": 5,
+              "reasoning": 0,
+              "cache": {
+                "read": 0,
+                "write": 0
+              }
+            }
+          }
+        },
+        {
+          "id": "msg_idle_0006",
+          "type": "idle",
+          "seq": 6,
+          "time_created": 1700000500000,
+          "data": {
+            "time": {
+              "created": 1700000500000
+            },
+            "outcome": "succeeded"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ses_bbbbbbbbbbbbbbbbbbbbbbbb",
+      "project_id": "proj_demo",
+      "parent_id": "ses_aaaaaaaaaaaaaaaaaaaaaaaa",
+      "directory": "/work/demo",
+      "slug": "inspect-widget-helper",
+      "title": "Inspect widget helper",
+      "version": "2.4.1",
+      "agent": "explore",
+      "model": {
+        "id": "test-model",
+        "providerID": "test"
+      },
+      "cost": 0.001,
+      "tokens": {
+        "input": 15,
+        "output": 8,
+        "reasoning": 0,
+        "cache_read": 0,
+        "cache_write": 0
+      },
+      "time_created": 1700000200000,
+      "time_updated": 1700000300000,
+      "time_busy": 1700000200500,
+      "time_idle": 1700000300000,
+      "idle_outcome": "succeeded",
+      "messages": [
+        {
+          "id": "msg_child_user_0001",
+          "type": "user",
+          "seq": 1,
+          "time_created": 1700000200100,
+          "data": {
+            "time": {
+              "created": 1700000200100
+            },
+            "text": "Which helper does the widget use?"
+          }
+        },
+        {
+          "id": "msg_child_assistant_0002",
+          "type": "assistant",
+          "seq": 2,
+          "time_created": 1700000200200,
+          "data": {
+            "time": {
+              "created": 1700000200200,
+              "completed": 1700000201000
+            },
+            "agent": "explore",
+            "model": {
+              "id": "test-model",
+              "providerID": "test"
+            },
+            "content": [],
+            "finish": "stop",
+            "cost": 0.001,
+            "tokens": {
+              "input": 15,
+              "output": 8,
+              "reasoning": 0,
+              "cache": {
+                "read": 0,
+                "write": 0
+              }
+            }
+          },
+          "parts": [
+            {
+              "ordinal": 0,
+              "type": "text",
+              "data": {
+                "type": "text",
+                "text": "It uses `widget_helper.py`."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ses_cccccccccccccccccccccccc",
+      "project_id": "proj_other",
+      "parent_id": null,
+      "directory": "/work/other",
+      "slug": "unrelated-experiment",
+      "title": "Unrelated experiment",
+      "version": "2.4.1",
+      "agent": "build",
+      "model": {
+        "id": "test-model",
+        "providerID": "test"
+      },
+      "cost": 0,
+      "tokens": {
+        "input": 5,
+        "output": 2,
+        "reasoning": 0,
+        "cache_read": 0,
+        "cache_write": 0
+      },
+      "time_created": 1700001000000,
+      "time_updated": 1700001100000,
+      "time_busy": null,
+      "time_idle": null,
+      "idle_outcome": null,
+      "messages": [
+        {
+          "id": "msg_other_user_0001",
+          "type": "user",
+          "seq": 1,
+          "time_created": 1700001000100,
+          "data": {
+            "time": {
+              "created": 1700001000100
+            },
+            "text": "Try a new message type."
+          }
+        },
+        {
+          "id": "msg_other_future_0002",
+          "type": "future-event",
+          "seq": 2,
+          "time_created": 1700001000200,
+          "data": {
+            "time": {
+              "created": 1700001000200
+            },
+            "payload": {
+              "kind": "unknown"
+            }
+          }
+        },
+        {
+          "id": "msg_other_assistant_0003",
+          "type": "assistant",
+          "seq": 3,
+          "time_created": 1700001000300,
+          "data": {
+            "time": {
+              "created": 1700001000300,
+              "completed": 1700001000400
+            },
+            "agent": "build",
+            "model": {
+              "id": "test-model",
+              "providerID": "test"
+            },
+            "content": [],
+            "finish": "stop",
+            "cost": 0,
+            "tokens": {
+              "input": 5,
+              "output": 2,
+              "reasoning": 0,
+              "cache": {
+                "read": 0,
+                "write": 0
+              }
+            }
+          },
+          "parts": [
+            {
+              "ordinal": 0,
+              "type": "image",
+              "data": {
+                "type": "image",
+                "url": "https://example.invalid/image.png"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

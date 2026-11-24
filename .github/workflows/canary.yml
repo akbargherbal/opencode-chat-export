@@ -1,0 +1,21 @@
+name: upstream-canary
+
+# This job needs a real OpenCode installation and database, so it is manual (or
+# scheduled on a self-hosted runner). It never runs on a plain GitHub runner.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 6 * * 1"
+
+jobs:
+  canary:
+    runs-on: [self-hosted, opencode]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Probe OpenCode CLI + database
+        run: python scripts/check_upstream.py --json
+      - name: Doctor
+        run: ./bin/opencode-chat-export doctor --json

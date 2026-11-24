@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/akbargherbal/opencode-chat-export/schema/index.schema.json",
+  "title": "opencode-chat-export session index",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "sessions"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "generated_at": { "type": "string" },
+    "opencode_version": { "type": ["string", "null"] },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "file"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "created": { "type": ["string", "null"] },
+          "updated": { "type": ["string", "null"] },
+          "directory": { "type": "string" },
+          "parent_id": { "type": ["string", "null"] },
+          "messages": { "type": "integer" },
+          "file": { "type": "string" },
+          "transcript": { "type": ["string", "null"] },
+          "bytes": { "type": "integer" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

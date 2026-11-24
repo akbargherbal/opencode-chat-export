@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/akbargherbal/opencode-chat-export/schema/manifest.schema.json",
+  "title": "opencode-chat-export manifest",
+  "type": "object",
+  "required": ["schema_version", "tool", "generated_at", "sessions"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "tool": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "generated_at": { "type": "string" },
+    "opencode": { "type": "object" },
+    "options": { "type": "object" },
+    "totals": { "type": "object" },
+    "backends": { "type": "object" },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "file", "sha256", "bytes", "messages"],
+        "properties": {
+          "id": { "type": "string" },
+          "file": { "type": "string" },
+          "transcript": { "type": ["string", "null"] },
+          "sha256": { "type": "string" },
+          "bytes": { "type": "integer" },
+          "messages": { "type": "integer" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "files": { "type": "array" },
+    "issues": { "type": "array" }
+  },
+  "additionalProperties": true
+}

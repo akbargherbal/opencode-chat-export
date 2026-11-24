@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/akbargherbal/opencode-chat-export/schema/session-export.schema.json",
+  "title": "OpenCode session export",
+  "description": "Loose schema for `opencode session export <id>`. Unknown fields and message types are allowed so future OpenCode releases remain exportable.",
+  "type": "object",
+  "required": ["info", "messages"],
+  "properties": {
+    "info": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "projectID": { "type": "string" },
+        "parentID": { "type": "string" },
+        "title": { "type": "string" },
+        "agent": { "type": "string" },
+        "model": { "type": "object" },
+        "cost": { "type": "number" },
+        "tokens": {
+          "type": "object",
+          "properties": {
+            "input": { "type": "number" },
+            "output": { "type": "number" },
+            "reasoning": { "type": "number" },
+            "cache": {
+              "type": "object",
+              "properties": {
+                "read": { "type": "number" },
+                "write": { "type": "number" }
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "time": {
+          "type": "object",
+          "properties": {
+            "created": { "type": "integer" },
+            "updated": { "type": "integer" },
+            "busy": { "type": "integer" },
+            "idle": { "type": "integer" }
+          },
+          "additionalProperties": true
+        },
+        "location": {
+          "type": "object",
+          "properties": { "directory": { "type": "string" } },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1 },
+          "time": { "type": "object" },
+          "text": { "type": "string" },
+          "files": { "type": "array" },
+          "agents": { "type": "array" },
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": { "type": "string" },
+                "text": { "type": "string" },
+                "name": { "type": "string" },
+                "state": { "type": "object" }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

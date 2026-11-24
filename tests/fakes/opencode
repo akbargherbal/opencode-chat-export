@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+"""A fake `opencode` executable for tests.
+
+Environment switches:
+  FAKE_OPENCODE_MODE=v2|legacy|no-export|no-list
+  FAKE_OPENCODE_EXPORT_MODE=ok|fail|truncated|help
+  FAKE_OPENCODE_LIST_MODE=ok|empty|fail
+  FAKE_OPENCODE_API_MODE=ok|fail
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+
+from fixture_export import doc_for, list_sessions  # noqa: E402
+
+MODE = os.environ.get("FAKE_OPENCODE_MODE", "v2")
+EXPORT_MODE = os.environ.get("FAKE_OPENCODE_EXPORT_MODE", "ok")
+LIST_MODE = os.environ.get("FAKE_OPENCODE_LIST_MODE", "ok")
+API_MODE = os.environ.get("FAKE_OPENCODE_API_MODE", "ok")
+
+
+def out(value) -> None:
+    sys.stdout.write(json.dumps(value) + "\n")
+
+
+def main(argv: list) -> int:
+    if "--version" in argv:
+        print("opencode v2.4.1")
+        return 0
+
+    if argv[:2] == ["session", "export"] and "--help" in argv:
+        return 0 if MODE not in ("legacy", "no-export") else 1
+    if argv[:1] == ["export"] and "--help" in argv:
+        return 0 if MODE == "legacy" else 1
+
+    if argv[:2] == ["session", "list"] or argv[:1] == ["list"]:
+        if MODE == "no-list" or LIST_MODE == "fail":
+            sys.stderr.write("session list unavailable\n")
+            return 1
+        if LIST_MODE == "empty":
+            out([])
+            return 0
+        out(list_sessions())
+        return 0
+
+    if argv[:2] == ["api", "get"]:
+        if API_MODE == "fail" or MODE == "no-api":
+            sys.stderr.write("api unavailable\n")
+            return 1
+        path = argv[2]
+        if path.startswith("/api/session"):
+            out({"data": list_sessions(), "cursor": {}})
+            return 0
+        if "/export" in path:
+            session_id = path.split("/")[-2]
+            out({"data": doc_for(session_id)})
+            return 0
+        sys.stderr.write(f"unknown api path {path}\n")
+        return 1
+
+    prefix = None
+    if argv[:2] == ["session", "export"] and MODE not in ("legacy", "no-export"):
+        prefix = 2
+    elif argv[:1] == ["export"] and MODE in ("legacy", "no-export"):
+        prefix = 1
+    if prefix is not None and len(argv) > prefix:
+        session_id = argv[prefix]
+        if EXPORT_MODE == "fail":
+            sys.stderr.write("export failed\n")
+            return 1
+        if EXPORT_MODE == "truncated":
+            sys.stdout.write('{"info": {"id": "' + session_id + '"}, "messages": [')
+            return 0
+        if EXPORT_MODE == "help":
+            sys.stdout.write("Usage: opencode session export [flags] [session]\n")
+            return 0
+        doc = doc_for(session_id)
+        if "--sanitize" in argv:
+            doc["info"]["sanitized"] = True
+            for message in doc.get("messages", []):
+                if isinstance(message.get("text"), str):
+                    message["text"] = "[REDACTED]"
+                for part in message.get("content", []) or []:
+                    if isinstance(part.get("text"), str):
+                        part["text"] = "[REDACTED]"
+        out(doc)
+        return 0
+
+    sys.stderr.write("unrecognized command: " + " ".join(argv) + "\n")
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))
